@@ -60,6 +60,7 @@ passport.deserializeUser(function(user, cb) {
 var router = express.Router();
 
 router.get('/login', function(req, res, next) {
+  res.locals.FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
   res.render('login');
 });
 
