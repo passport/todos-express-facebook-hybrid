@@ -6,7 +6,7 @@ window.addEventListener('load', function() {
     
     event.preventDefault();
     
-    var clientID = document.querySelector('meta[name="facebook-client-id"]').content;
+    var clientID = document.querySelector('meta[name="facebook-client-id"]').getAttribute('content');
     var redirectURI = 'http://localhost:3000/oauth2/redirect/facebook';
     var state = 'foo';
     
@@ -25,6 +25,19 @@ window.addEventListener('load', function() {
     console.log('signin: got message');
     console.log(e.data);
     
+    if (e.data.type !== 'authorization_response') { return; }
+    
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/oauth2/receive/facebook', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('CSRF-Token', csrfToken);
+    
+    xhr.onload = function() {
+      console.log('Auth code response: ' + xhr.responseText);
+    };
+    xhr.send(JSON.stringify(e.data.response));
   });
   
 });
