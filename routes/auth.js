@@ -8,7 +8,7 @@ passport.use(new FacebookStrategy({
   clientID: process.env['FACEBOOK_CLIENT_ID'],
   clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
   callbackURL: '/oauth2/redirect/facebook',
-  state: true
+  state: false
 }, function verify(accessToken, refreshToken, profile, cb) {
   db.get('SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?', [
     'https://www.facebook.com',
@@ -75,6 +75,12 @@ router.get('/oauth2/redirect/facebook', passport.authenticate('facebook', {
 
 router.get('/oauth2/redirect/facebook', function(req, res, next) {
   res.render('redirect');
+});
+
+router.post('/oauth2/receive/facebook', passport.authenticate('facebook', {
+  failWithError: true
+}), function(req, res, next) {
+  res.json({ ok: true, location: '/' });
 });
 
 router.post('/logout', function(req, res, next) {

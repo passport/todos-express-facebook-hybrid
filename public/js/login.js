@@ -36,6 +36,9 @@ window.addEventListener('load', function() {
     
     xhr.onload = function() {
       console.log('Auth code response: ' + xhr.responseText);
+      
+      var json = JSON.parse(xhr.responseText);
+      window.location.href = json.location;
     };
     xhr.send(JSON.stringify(e.data.response));
   });
