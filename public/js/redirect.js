@@ -14,6 +14,6 @@ window.addEventListener('load', function() {
   window.opener.postMessage({
     type: 'authorization_response',
     response: response
-  }, 'http://localhost:3000');
+  }, window.location.origin);
   
 });

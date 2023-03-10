@@ -7,6 +7,7 @@ window.addEventListener('load', function() {
   });
   
   window.addEventListener('message', function(event) {
+    if (event.origin !== window.location.origin) { return; }
     if (event.data.type !== 'authorization_response') { return; }
     
     event.source.close();
