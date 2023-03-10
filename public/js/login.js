@@ -1,14 +1,20 @@
+function nonce(length) {
+  var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  
+  var result = '';
+  for (var i = length; i > 0; --i) { result += CHARS[Math.floor(Math.random() * CHARS.length)]; }
+  return result;
+}
+
 window.addEventListener('load', function() {
-  console.log('LOAD!')
+  var state;
   
   document.getElementById('siw-facebook').addEventListener('click', function(event) {
-    console.log('SIW FACEBOOK!');
-    
     event.preventDefault();
     
     var clientID = document.querySelector('meta[name="facebook-client-id"]').getAttribute('content');
     var redirectURI = 'http://localhost:3000/oauth2/redirect/facebook';
-    var state = 'foo';
+    state = nonce(8);
     
     var url = 'https://www.facebook.com/v3.2/dialog/oauth?'
       + 'response_type=code&'
@@ -19,13 +25,7 @@ window.addEventListener('load', function() {
     window.open(url, '_login', 'top=' + (screen.height / 2 - 275) + ',left=' + (screen.width / 2 - 250) + ',width=500,height=550');
   });
   
-  
-  
-  
   window.addEventListener('message', function(e) {
-    console.log('signin: got message');
-    console.log(e.data);
-    
     if (e.data.type !== 'authorization_response') { return; }
     
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -43,5 +43,4 @@ window.addEventListener('load', function() {
     };
     xhr.send(JSON.stringify(e.data.response));
   });
-  
 });
