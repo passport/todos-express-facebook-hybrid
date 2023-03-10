@@ -2,11 +2,12 @@ window.addEventListener('load', function() {
   
   document.getElementById('siw-facebook').addEventListener('click', function(event) {
     event.preventDefault();
+    
     window.open('/login/federated/facebook', '_login', 'top=' + (screen.height / 2 - 275) + ',left=' + (screen.width / 2 - 250) + ',width=500,height=550');
   });
   
-  window.addEventListener('message', function(e) {
-    if (e.data.type !== 'authorization_response') { return; }
+  window.addEventListener('message', function(event) {
+    if (event.data.type !== 'authorization_response') { return; }
     
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     
@@ -18,7 +19,7 @@ window.addEventListener('load', function() {
       var json = JSON.parse(xhr.responseText);
       window.location.href = json.location;
     };
-    xhr.send(JSON.stringify(e.data.response));
+    xhr.send(JSON.stringify(event.data.response));
   });
   
 });

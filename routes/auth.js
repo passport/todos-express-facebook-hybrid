@@ -65,23 +65,11 @@ router.get('/login', function(req, res, next) {
 
 router.get('/login/federated/facebook', passport.authenticate('facebook'));
 
-/*
-router.get('/oauth2/redirect/facebook', passport.authenticate('facebook', {
-  successReturnToOrRedirect: '/',
-  failureRedirect: '/login'
-}));
-*/
-
 router.get('/oauth2/redirect/facebook', function(req, res, next) {
   res.render('redirect');
 });
 
-function debug(req, res, next) {
-  console.log(req.body);
-  next();
-}
-
-router.post('/oauth2/receive/facebook', debug, passport.authenticate('facebook', {
+router.post('/oauth2/receive/facebook', passport.authenticate('facebook', {
   failWithError: true
 }), function(req, res, next) {
   res.json({ ok: true, location: '/' });
