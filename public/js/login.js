@@ -16,9 +16,10 @@ window.addEventListener('load', function() {
       + 'redirect_uri=' + encodeURIComponent(redirectURI) + '&'
       + 'state=' + encodeURIComponent(state);
     
-    window.open(url, 'name','height=200,width=150');
-    
+    window.open(url, '_login', 'top=' + (screen.height / 2 - 275) + ',left=' + (screen.width / 2 - 250) + ',width=500,height=550');
   });
+  
+  
   
   
   window.addEventListener('message', function(e) {
