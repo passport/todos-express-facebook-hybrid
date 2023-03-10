@@ -1,8 +1,8 @@
 {
-  "name": "todos-express-facebook-hybrid",
+  "name": "todos-express-facebook-popup",
   "version": "0.0.0",
   "private": true,
-  "description": "Todo app using Express and Passport for log in with Facebook.",
+  "description": "Todo app using Express and Passport for log in with Facebook in a popup window.",
   "keywords": [
     "example",
     "express",
@@ -14,13 +14,13 @@
     "email": "jaredhanson@gmail.com",
     "url": "https://www.jaredhanson.me/"
   },
-  "homepage": "https://github.com/passport/todos-express-facebook-hybrid",
+  "homepage": "https://github.com/passport/todos-express-facebook-popup",
   "repository": {
     "type": "git",
-    "url": "git://github.com/passport/todos-express-facebook-hybrid.git"
+    "url": "git://github.com/passport/todos-express-facebook-popup.git"
   },
   "bugs": {
-    "url": "https://github.com/passport/todos-express-facebook-hybrid/issues"
+    "url": "https://github.com/passport/todos-express-facebook-popup/issues"
   },
   "funding": {
     "type": "github",
