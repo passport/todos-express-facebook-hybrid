@@ -9,9 +9,10 @@ window.addEventListener('load', function() {
   window.addEventListener('message', function(event) {
     if (event.data.type !== 'authorization_response') { return; }
     
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    event.source.close();
     
-    const xhr = new XMLHttpRequest();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var xhr = new XMLHttpRequest();
     xhr.open('POST', '/oauth2/receive/facebook', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('CSRF-Token', csrfToken);
