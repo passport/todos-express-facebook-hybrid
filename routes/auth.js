@@ -65,14 +65,15 @@ router.get('/login', function(req, res, next) {
 
 router.get('/login/federated/facebook', passport.authenticate('facebook'));
 
-router.get('/oauth2/redirect/facebook', function(req, res, next) {
-  res.render('redirect');
-});
-
-router.post('/oauth2/receive/facebook', passport.authenticate('facebook', {
+router.get('/oauth2/redirect/facebook', passport.authenticate('facebook', {
   failWithError: true
 }), function(req, res, next) {
-  res.json({ ok: true, location: '/' });
+  var url = '/';
+  if (req.session && req.session.returnTo) {
+    url = req.session.returnTo;
+    delete req.session.returnTo;
+  }
+  res.render('redirect', { returnTo: url });
 });
 
 router.post('/logout', function(req, res, next) {
