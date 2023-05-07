@@ -8,7 +8,8 @@ passport.use(new FacebookStrategy({
   clientID: process.env['FACEBOOK_CLIENT_ID'],
   clientSecret: process.env['FACEBOOK_CLIENT_SECRET'],
   callbackURL: '/oauth2/redirect/facebook',
-  state: true
+  state: true,
+  store: true
 }, function verify(accessToken, refreshToken, profile, cb) {
   db.get('SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?', [
     'https://www.facebook.com',
@@ -63,7 +64,12 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
-router.get('/login/federated/facebook', passport.authenticate('facebook'));
+router.get('/login/federated/facebook', function(req, res, next) {
+  var state = {
+    display: req.query.display || 'page'
+  };
+  passport.authenticate('facebook', { state: state })(req, res, next);
+});
 
 router.get('/oauth2/redirect/facebook', passport.authenticate('facebook', {
   failWithError: true
@@ -73,7 +79,14 @@ router.get('/oauth2/redirect/facebook', passport.authenticate('facebook', {
     url = req.session.returnTo;
     delete req.session.returnTo;
   }
-  res.render('redirect', { returnTo: url });
+  var state = req.authInfo.state;
+  switch (state.display) {
+  case 'popup':
+    return res.render('redirect', { returnTo: url });
+  case 'page':
+  default:
+    return res.redirect(url);
+  }
 });
 
 router.post('/logout', function(req, res, next) {
